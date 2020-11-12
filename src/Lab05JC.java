@@ -9,7 +9,7 @@ public class Lab05JC {
         LnkLst list = new LnkLst();
         Scanner scanner = new Scanner(System.in);
         StringBuilder msg = new StringBuilder("");
-
+        Data datae = new Data();
         String yn = "Y";
         String searchYn = "Y";
 
@@ -72,7 +72,7 @@ public class Lab05JC {
 
                     msg.delete(0, msg.length());
 
-                  //  msg.append("\nSearching for SSN ").append(Data.getFmtSsn(ssnInput)).append("\n");
+                  msg.append("\nSearching for SSN ").append(Data.fmtSsn(ssnInput)).append("\n");
 
                     System.out.print(msg);
                     Data data = new Data();
