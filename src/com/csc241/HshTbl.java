@@ -32,7 +32,7 @@ public class HshTbl extends LnkLst
         }
     }
 
-    public int createFromFile( String fileName )   // TODO
+    public int createFromFile( String fileName )
     {
         BufferedInputStream bis = null;
         DataInputStream dis = null;
@@ -66,6 +66,7 @@ public class HshTbl extends LnkLst
                 offset += 2;
                 data.setZip(new String(dataBytes, offset, 9));
                 offset = 0;
+
                 this.ins(data);
             }
         } catch (Exception var19) {
@@ -116,10 +117,34 @@ public class HshTbl extends LnkLst
     public int search( final Data searchData )
     {
         int hash = hash(searchData);
-        if (lnkLsts[hash].getCurrentEntry() == searchData){
-            return hash;
-        } else {
-            return -1;
+        StringBuilder msg = new StringBuilder("");
+        long searchOutput = 0;
+        String data = searchData.getSsn();
+        boolean found = false;
+
+        long  searchStartTime = System.currentTimeMillis();
+        if (lnkLsts[hash].getCurrentEntry().getSsn().equals(data)){
+            msg.append("The key was found in record # ").append(hash);
+            System.out.print(msg);
+            msg.delete(0, msg.length());
+            found = true;
         }
+        long searchEndTime = System.currentTimeMillis();
+
+        searchOutput = searchEndTime - searchStartTime;
+
+        if (found == true){
+            msg.append("\nThe search required ").append(searchOutput).append(" ms to complete");
+            msg.append("\n").append(lnkLsts[hash].getCurrentEntry());
+            System.out.print(msg);
+            msg.delete(0, msg.length());
+        }  else {
+            msg.append("SSN ").append(data).append(" was not found");
+            System.out.print(msg);
+            msg.delete(0, msg.length());
+            return FAILURE;
+
+        }
+        return hash;
     }
 }
