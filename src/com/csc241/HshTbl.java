@@ -2,7 +2,7 @@ package com.csc241;
 
 import java.io.*;
 
-public class HshTbl extends SrtdLnkLst
+public class HshTbl extends LnkLst
 {
     private LnkLst[] lnkLsts;
 
@@ -16,7 +16,7 @@ public class HshTbl extends SrtdLnkLst
 
         for( cnt = hash = 0 ; cnt < Data.SSNLN ; cnt++ )
         {
-           // hash = ( hash * Data.NUMCHARS + ( int ) key.charAt( cnt ) - Data.SP ) % HASHSIZE;
+            hash = ( hash * Data.DATALN + ( int ) key.charAt( cnt ) - Data.SSNLN ) % HASHSIZE;
         }
 
         return( hash );
@@ -66,11 +66,10 @@ public class HshTbl extends SrtdLnkLst
                 offset += 2;
                 data.setZip(new String(dataBytes, offset, 9));
                 offset = 0;
-              //  this.insTail(data);
+                this.ins(data);
             }
         } catch (Exception var19) {
             var19.printStackTrace();
-            nData = -1;
         } finally {
             try {
                 fis.close();
@@ -85,8 +84,10 @@ public class HshTbl extends SrtdLnkLst
     }
 
 
-    public int delRec( final Data searchData )   // TODO
+    public int delRec( final Data searchData )
     {
+        int hash = hash(searchData);
+        lnkLsts[hash].reset();
         return 1;
     }
 
@@ -95,10 +96,11 @@ public class HshTbl extends SrtdLnkLst
         return lnkLsts[ hash( searchData ) ].getCurrentEntry();
     }
 
-    public int ins( final Data data )   // TODO
+    public int ins( final Data data )
     {
-        
-        return 1;
+        int hash = hash(data);
+        lnkLsts[hash].insHead(data);
+        return lnkLsts[hash].length();
     }
 
     public boolean isEmpty()
@@ -106,13 +108,18 @@ public class HshTbl extends SrtdLnkLst
         return length() == 0;
     }
 
-    public int length()   // TODO
+    public int length()
     {
         return nNodes;
     }
 
-    public int search( final Data searchData )   // TODO
+    public int search( final Data searchData )
     {
-        return 1;
+        int hash = hash(searchData);
+        if (lnkLsts[hash].getCurrentEntry() == searchData){
+            return hash;
+        } else {
+            return -1;
+        }
     }
 }

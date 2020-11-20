@@ -6,10 +6,9 @@ import java.util.Scanner;
 public class Lab05JC {
 
     public static void main(String[] args) {
-        LnkLst list = new LnkLst();
+        HshTbl hashtable = new HshTbl();
         Scanner scanner = new Scanner(System.in);
         StringBuilder msg = new StringBuilder("");
-        Data datae = new Data();
         String yn = "Y";
         String searchYn = "Y";
 
@@ -58,7 +57,7 @@ public class Lab05JC {
 
                 msg.delete(0, msg.length());
 
-                list.createFromFile(fileName);
+                hashtable.createFromFile(fileName);
                 searchYn = "Y";
 
 
@@ -77,7 +76,7 @@ public class Lab05JC {
                     System.out.print(msg);
                     Data data = new Data();
                     data.setSsn(ssnInput);
-                    list.lSearch(data);
+                    hashtable.search(data);
                     msg.delete(0, msg.length());
 
                     msg.append("\n\nDo you wish to continue with another SSN (Y\\N)? - ");
