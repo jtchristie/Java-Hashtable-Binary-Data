@@ -1,11 +1,12 @@
 package com.csc241;
 
+import javax.security.auth.login.FailedLoginException;
 import java.io.*;
 
-public class HshTbl extends LnkLst
+public class HshTbl
 {
     private LnkLst[] lnkLsts;
-
+    static int FAILURE = -1;
     private static final int HASHSIZE = 701;   // A prime number not too near a power of 2.
 
     private int hash( final Data searchData )
@@ -69,6 +70,7 @@ public class HshTbl extends LnkLst
 
                 this.ins(data);
             }
+            return nData;
         } catch (Exception var19) {
             var19.printStackTrace();
         } finally {
@@ -77,19 +79,23 @@ public class HshTbl extends LnkLst
                 bis.close();
                 dis.close();
             } catch (Exception var18) {
+                return FAILURE;
             }
 
         }
-
-        return 1;
+        return FAILURE;
     }
 
 
     public int delRec( final Data searchData )
     {
         int hash = hash(searchData);
-        lnkLsts[hash].reset();
-        return 1;
+        if (lnkLsts[hash].length() > 0){
+            lnkLsts[hash].reset();
+            return lnkLsts[hash].length();
+        } else {
+            return FAILURE;
+        }
     }
 
     public Data getCurrentEntry( final Data searchData )
@@ -100,8 +106,11 @@ public class HshTbl extends LnkLst
     public int ins( final Data data )
     {
         int hash = hash(data);
-        lnkLsts[hash].insHead(data);
-        return lnkLsts[hash].length();
+        if (lnkLsts[hash].insHead(data) > 0){
+            return lnkLsts[hash].length();
+        } else {
+            return FAILURE;
+        }
     }
 
     public boolean isEmpty()
@@ -111,7 +120,11 @@ public class HshTbl extends LnkLst
 
     public int length()
     {
-        return nNodes;
+        try {
+            return length();
+        } catch (Exception e){
+            return FAILURE;
+        }
     }
 
     public int search( final Data searchData )
@@ -124,7 +137,7 @@ public class HshTbl extends LnkLst
 
         long  searchStartTime = System.currentTimeMillis();
         if (lnkLsts[hash].getCurrentEntry().getSsn().equals(data)){
-            msg.append("The key was found in record # ").append(hash);
+            msg.append("\nThe key was found in record # ").append(hash);
             System.out.print(msg);
             msg.delete(0, msg.length());
             found = true;
@@ -134,16 +147,15 @@ public class HshTbl extends LnkLst
         searchOutput = searchEndTime - searchStartTime;
 
         if (found == true){
-            msg.append("\nThe search required ").append(searchOutput).append(" ms to complete");
-            msg.append("\n").append(lnkLsts[hash].getCurrentEntry());
+            msg.append("\nThe search required ").append(searchOutput).append(" ms to complete\n");
+            msg.append("\n").append(lnkLsts[hash].getCurrentEntry()).append("\n");
             System.out.print(msg);
             msg.delete(0, msg.length());
         }  else {
-            msg.append("SSN ").append(data).append(" was not found");
+            msg.append("SSN ").append(Data.fmtSsn(data)).append(" was not found");
             System.out.print(msg);
             msg.delete(0, msg.length());
             return FAILURE;
-
         }
         return hash;
     }

@@ -45,7 +45,7 @@ public class Lab05JC {
 
                 long recordSize = file.length() / Data.DATALN;
 
-                msg.append("\nPreparing to read ").append(fileName);
+                msg.append("Preparing to read ").append(fileName);
 
                 System.out.print(msg);
 
@@ -79,7 +79,7 @@ public class Lab05JC {
                     hashtable.search(data);
                     msg.delete(0, msg.length());
 
-                    msg.append("\n\nDo you wish to continue with another SSN (Y\\N)? - ");
+                    msg.append("\nDo you wish to continue with another SSN (Y\\N)? - ");
 
                     System.out.print(msg);
 
