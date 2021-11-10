@@ -6,7 +6,9 @@ import java.util.Scanner;
 public class Lab05JC {
 
     public static void main(String[] args) {
+        //instantiates hashtable
         HshTbl hashtable = new HshTbl();
+        //creates scanner and StringBuilder to handle user input and output information
         Scanner scanner = new Scanner(System.in);
         StringBuilder msg = new StringBuilder("");
         String yn = "Y";
@@ -31,6 +33,7 @@ public class Lab05JC {
 
                 fileExists = file.exists();
 
+                //error handling
                 if (!fileExists) {
 
                     msg.delete(0, msg.length());
@@ -57,6 +60,7 @@ public class Lab05JC {
 
                 msg.delete(0, msg.length());
 
+                //creates a hashtable using the name of the file as an input
                 hashtable.createFromFile(fileName);
                 searchYn = "Y";
 
